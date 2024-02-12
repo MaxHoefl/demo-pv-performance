@@ -29,3 +29,22 @@ jobs:
 
     - name: Push Docker image to Azure Container Registry
       run: docker push ${{ secrets.ACR_REGISTRY_URL }}/demo-api:${{ github.sha }}
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+      - name: Azure AKS Set Context
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AKS_SP_CLIENT_SECRET }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+          resource-group: ${{ secrets.AKS_RG }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Helm upgrade
+        run: |
+          helm upgrade --install demo-pv-performance ./helm --set image.tag=${{ github.sha }}

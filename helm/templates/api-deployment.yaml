@@ -17,3 +17,14 @@ spec:
           image: {{ .Values.container_registry }}/demo-api:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: CUBE_PATH
+              value: /mnt/data/cube.bin
+          volumeMounts:
+            - name: blob01
+              mountPath: "/mnt/data"
+              readOnly: false
+      volumes:
+        - name: blob01
+          persistentVolumeClaim:
+            claimName: pvc-blob
