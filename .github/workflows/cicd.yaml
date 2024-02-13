@@ -47,13 +47,8 @@ jobs:
         with:
           resource-group: ${{ secrets.AKS_RG }}
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
-#      - name: Azure AKS Set Context
-#        uses: azure/aks-set-context@v1
-#        with:
-#          creds: ${{ secrets.AKS_SP_CLIENT_SECRET }}
-#          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
-#          resource-group: ${{ secrets.AKS_RG }}
-#          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Helm upgrade
         run: |
-          helm upgrade --install demo-pv-performance ./helm --set image.tag=${{ github.sha }}
+          helm upgrade --install demo-pv-performance ./helm
