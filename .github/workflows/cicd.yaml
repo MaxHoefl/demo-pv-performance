@@ -38,13 +38,24 @@ jobs:
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
-      - name: Azure AKS Set Context
-        uses: azure/aks-set-context@v1
+      - name: Azure login
+        uses: azure/login@v1
         with:
-          creds: ${{ secrets.AKS_SP_CLIENT_SECRET }}
-          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
-          resource-group: ${{ secrets.AKS_RG }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.AKS_RG }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+#      - name: Azure AKS Set Context
+#        uses: azure/aks-set-context@v1
+#        with:
+#          creds: ${{ secrets.AKS_SP_CLIENT_SECRET }}
+#          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+#          resource-group: ${{ secrets.AKS_RG }}
+#          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Helm upgrade
         run: |
           helm upgrade --install demo-pv-performance ./helm --set image.tag=${{ github.sha }}
