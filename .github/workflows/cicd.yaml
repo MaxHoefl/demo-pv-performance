@@ -50,5 +50,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Helm upgrade
+        env:
+          STORAGE_ACCOUNT_KEY=${{ secrets.STORAGE_ACCOUNT_KEY }}
         run: |
-          helm upgrade --install demo-pv-performance ./helm
+          helm upgrade --install demo-pv-performance ./helm \
+            --set api.image.tag=${{ github.sha }} \
+            --set storage_account.key=$STORAGE_ACCOUNT_KEY

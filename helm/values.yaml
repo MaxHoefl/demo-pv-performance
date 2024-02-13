@@ -1,1 +1,9 @@
-container_registry: demoacr41235.azurecr.io
+container_registry: demoacr41235.azurecr.io/
+storage_account:
+  name: demost41235
+  key: "KEY"
+
+api:
+  image:
+    name: "demo-api"
+    tag: "latest"

@@ -22,5 +22,5 @@ spec:
     volumeAttributes:
       containerName: dev
     nodeStageSecretRef:
-      name: azure-secret
+      name: storage-account-secret
       namespace: default

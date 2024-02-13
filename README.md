@@ -15,6 +15,3 @@ The purpose of this repository is to measure performance differences between PVs
 
 - Deploy four instances of a web API with GET endpoint to retrieve data from the four different storage solutions
 - Use k6 to measure performance differences between the four instances
-
-
-

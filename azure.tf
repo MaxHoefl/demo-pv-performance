@@ -83,5 +83,9 @@ resource "azurerm_kubernetes_cluster" "demo_aks" {
     client_id     = var.aks_sp_client_id
     client_secret = var.aks_sp_client_secret
   }
+
+  storage_profile {
+    blob_driver_enabled = true
+  }
 }
 
