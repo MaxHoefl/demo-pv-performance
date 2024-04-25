@@ -1,4 +1,4 @@
-resources/cube.bin
+resources/*
 .env
 .terraform.tfstate.lock.info
 __pycache__/

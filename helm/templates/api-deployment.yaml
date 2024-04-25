@@ -20,8 +20,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: CUBE_PATH
-              value: /mnt/data/cube.bin
+            - name: CUBE_ROOT_DIR
+              value: /mnt/data
           volumeMounts:
             - name: blob01
               mountPath: "/mnt/data"
