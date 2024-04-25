@@ -22,4 +22,6 @@ The purpose of this repository is to measure performance differences between PVs
 
 ## Setup
 
-Make sure the AKS can access ACR: `az aks update -n <name aks> -g <aks resource group> --attach-acr <name of acr>`
+- Make sure the AKS can access ACR: `az aks update -n <name aks> -g <aks resource group> --attach-acr <name of acr>`
+- Store latest ACR url and credentials in github repo secrets `ACR_REGISTRY_URL`, `ACR_USERNAME` and `ACR_PASSWORD`
+
