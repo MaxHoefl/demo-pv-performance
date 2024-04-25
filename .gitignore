@@ -2,6 +2,6 @@ resources/cube.bin
 .env
 .terraform.tfstate.lock.info
 __pycache__/
-terraform.tfstate
+terraform.tfstate*
 .idea/
 .terraform/
