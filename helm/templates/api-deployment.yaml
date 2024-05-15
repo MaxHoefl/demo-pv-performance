@@ -21,12 +21,11 @@ spec:
             - containerPort: 8080
           env:
             - name: CUBE_ROOT_DIR
-              value: /mnt/cubes
-          volumeMounts:
+              value: /dev/sdx
+          volumeDevices:
             - name: azure-disk
-              mountPath: "/mnt/cubes"
-              readOnly: false
+              devicePath: "/dev/sdx"
       volumes:
         - name: azure-disk
           persistentVolumeClaim:
-            claimName: azure-managed-disk
+            claimName: pvc-azure-disk
