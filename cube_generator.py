@@ -19,11 +19,10 @@ sizes = {
     }
 }
 
-id = "mini"
-x, y, z = sizes[id].values()
-cube = numpy.random.random(size=(x, y, z))
-cube.tofile(f"resources/cube_{id}.bin")
-with open(f"resources/cube_{id}.json", "w") as f:
-    f.write(json.dumps({"x": x, "y": y, "z": z}))
-
-print(f'File Size in MegaBytes is {x * y * z * 8 / (1024 * 1024)}')
+def generate_cube(id: str, target_dir):
+    x, y, z = sizes[id].values()
+    cube = numpy.random.random(size=(x, y, z))
+    cube.tofile(f"{target_dir}/cube_{id}.bin")
+    with open(f"{target_dir}/cube_{id}.json", "w") as f:
+        f.write(json.dumps({"x": x, "y": y, "z": z}))
+    return x * y * z * 8 / (1024 * 1024)

@@ -8,6 +8,9 @@ import numpy as np
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
+from starlette.responses import JSONResponse
+
+from cube_generator import generate_cube
 
 app = FastAPI()
 
@@ -48,6 +51,15 @@ async def random_cube_slice(id: str):
     rdm_2 = random.randint(0, y-1)
     random_slice = cube_array[rdm_1, rdm_2, :]
     return {"random_slice": random_slice.tolist()}
+
+
+@app.post("/cube/{id}")
+async def create_cube(id: str):
+    cube_size = generate_cube(id, CUBE_ROOT_DIR)
+    return JSONResponse(content={
+        "id": id,
+        "size_mb": cube_size
+    }, status_code=201)
 
 
 if __name__ == "__main__":
