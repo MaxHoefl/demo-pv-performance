@@ -23,10 +23,10 @@ spec:
             - name: CUBE_ROOT_DIR
               value: /mnt/cubes
           volumeMounts:
-            - name: local
+            - name: azure-disk
               mountPath: "/mnt/cubes"
               readOnly: false
       volumes:
-        - name: vol01
+        - name: azure-disk
           persistentVolumeClaim:
-            claimName: local-pvc
+            claimName: azure-managed-disk
