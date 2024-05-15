@@ -20,4 +20,4 @@ spec:
     requests:
       storage: 256Gi  # minimum size of shared disk is 256GB (P15)
   volumeMode: Block
-  storageClassName: managed-csi
+  storageClassName: managed-csi-shared
