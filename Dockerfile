@@ -1,9 +1,6 @@
 FROM python:3.9.18-alpine3.19
 
 ARG cube_root_dir_arg="/app/resources/"
-ENV CUBE_ROOT_DIR=$cube_root_dir_arg
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
 
 RUN apk update && apk add --no-cache \
     gcc \
@@ -20,6 +17,12 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-root --no-interaction --no-ansi
 
 COPY ./main.py /app/
+COPY ./cube_generator.py /app/
+
+ENV PYTHONPATH="."
+ENV CUBE_ROOT_DIR=$cube_root_dir_arg
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8080
 
