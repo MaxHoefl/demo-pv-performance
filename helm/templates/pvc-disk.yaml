@@ -1,23 +1,52 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: managed-csi-shared
-provisioner: disk.csi.azure.com
-parameters:
-  skuname: Premium_LRS  # Currently shared disk only available with premium SSD
-  maxShares: "2"
-  cachingMode: None  # ReadOnly cache is not available for premium SSD with maxShares>1
-reclaimPolicy: Delete
----
-kind: PersistentVolumeClaim
+{{/*apiVersion: storage.k8s.io/v1*/}}
+{{/*kind: StorageClass*/}}
+{{/*metadata:*/}}
+{{/*  name: managed-csi-shared*/}}
+{{/*provisioner: disk.csi.azure.com*/}}
+{{/*parameters:*/}}
+{{/*  skuname: Premium_LRS  # Currently shared disk only available with premium SSD*/}}
+{{/*  maxShares: "2"*/}}
+{{/*  cachingMode: None  # ReadOnly cache is not available for premium SSD with maxShares>1*/}}
+{{/*reclaimPolicy: Delete*/}}
+{{/*---*/}}
+{{/*kind: PersistentVolumeClaim*/}}
+{{/*apiVersion: v1*/}}
+{{/*metadata:*/}}
+{{/*  name: pvc-azure-disk*/}}
+{{/*spec:*/}}
+{{/*  accessModes:*/}}
+{{/*    - ReadWriteMany*/}}
+{{/*  resources:*/}}
+{{/*    requests:*/}}
+{{/*      storage: 256Gi  # minimum size of shared disk is 256GB (P15)*/}}
+{{/*  volumeMode: Block*/}}
+{{/*  storageClassName: managed-csi-shared*/}}
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: azuredisk-shared-block
+spec:
+  capacity:
+    storage: "256Gi" # 256 is the minimum size allowed for shared disk
+  volumeMode: Block # PV and PVC volumeMode must be 'Block'
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  azureDisk:
+    kind: Managed
+    diskURI: /subscriptions/5b3679c5-2ca5-44ea-97eb-c9e046cc82ad/resourcegroups/demo-rg/providers/Microsoft.Compute/disks/azure-disk-shared-01
+    diskName: azure-disk-shared-01
+    cachingMode: None # Caching mode must be 'None'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: pvc-azure-disk
 spec:
-  accessModes:
-    - ReadWriteMany
   resources:
     requests:
-      storage: 256Gi  # minimum size of shared disk is 256GB (P15)
+      storage: 256Gi
   volumeMode: Block
-  storageClassName: managed-csi-shared
+  accessModes:
+    - ReadWriteMany
+  volumeName: azuredisk-shared-block # The name of the PV (above)

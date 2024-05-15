@@ -21,10 +21,17 @@ spec:
             - containerPort: 8080
           env:
             - name: CUBE_ROOT_DIR
-              value: /dev/sdx
+              value: /mnt/cubes
           volumeDevices:
             - name: azure-disk
               devicePath: "/dev/sdx"
+      initContainers:
+        - name: setup
+          image: ubuntu
+          command: [ "bash", "-c", "apt-get update && apt-get install -y e2fsprogs && mkfs.ext4 /dev/sdx && mkdir /mnt && mount /dev/sdx /mnt && mkdir /mnt/cubes" ]
+          volumeDevices:
+            - name: azure-disk
+              devicePath: /dev/sdx
       volumes:
         - name: azure-disk
           persistentVolumeClaim:
