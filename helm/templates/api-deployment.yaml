@@ -21,12 +21,12 @@ spec:
             - containerPort: 8080
           env:
             - name: CUBE_ROOT_DIR
-              value: /mnt/data
+              value: /mnt/cubes
           volumeMounts:
-            - name: blob01
-              mountPath: "/mnt/data"
+            - name: local
+              mountPath: "/mnt/cubes"
               readOnly: false
       volumes:
-        - name: blob01
+        - name: vol01
           persistentVolumeClaim:
-            claimName: pvc-blob
+            claimName: local-pvc

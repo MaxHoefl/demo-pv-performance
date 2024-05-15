@@ -7,3 +7,6 @@ api:
   image:
     name: "demo-api"
     tag: "latest"
+
+
+blobfuse: false

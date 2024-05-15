@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: managed-csi-premium
+  resources:
+    requests:
+      storage: 20Gi

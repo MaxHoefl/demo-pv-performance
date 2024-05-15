@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.35.0"
+      version = "~> 3.94.0"
     }
   }
 
@@ -13,45 +13,11 @@ provider "azurerm" {
   features {}
 }
 
-# Define input variables
-variable "aks_sp_client_id" {
-  description = "Client ID of the Azure service principal for AKS"
-}
-
-variable "aks_sp_client_secret" {
-  description = "Client Secret of the Azure service principal for AKS"
-}
-
-
 # Create a resource group
 resource "azurerm_resource_group" "demo_rg" {
   name     = "demo-rg"
-  location = "West Europe"
+  location = "North Europe"
 }
-
-# Create a storage account
-resource "azurerm_storage_account" "demost" {
-  name                     = "demost41235"
-  resource_group_name      = azurerm_resource_group.demo_rg.name
-  location                 = azurerm_resource_group.demo_rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-
-  tags = {
-    environment = "demo"
-  }
-
-  account_kind = "StorageV2"
-  is_hns_enabled = true
-}
-
-## Enable hierarchical namespace for the storage account (required for Data Lake Gen2)
-#resource "azurerm_storage_account_blob_properties" "demost_blob_properties" {
-#  storage_account_name = azurerm_storage_account.demost.name
-#  resource_group_name  = azurerm_resource_group.demo_rg.name
-#
-#  default_service_version = "2019-07-07"
-#}
 
 # Create container registry
 resource "azurerm_container_registry" "demo_acr" {
@@ -75,17 +41,18 @@ resource "azurerm_kubernetes_cluster" "demo_aks" {
     vm_size    = "Standard_DS2_v2"
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   tags = {
-    environment = "demo"
-  }
-
-  service_principal {
-    client_id     = var.aks_sp_client_id
-    client_secret = var.aks_sp_client_secret
-  }
-
-  storage_profile {
-    blob_driver_enabled = true
+    environment = "development"
   }
 }
 
+resource "azurerm_role_assignment" "aks_acr_role" {
+  principal_id                     = azurerm_kubernetes_cluster.demo_aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.demo_acr.id
+  skip_service_principal_aad_check = true
+}

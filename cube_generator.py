@@ -2,6 +2,11 @@ import json
 import numpy
 
 sizes = {
+    "mini": {
+        "x": 1,
+        "y": 1000,
+        "z": 40
+    },
     "small": {
         "x": 10,
         "y": 10000,
@@ -14,7 +19,7 @@ sizes = {
     }
 }
 
-id = "medium"
+id = "mini"
 x, y, z = sizes[id].values()
 cube = numpy.random.random(size=(x, y, z))
 cube.tofile(f"resources/cube_{id}.bin")
