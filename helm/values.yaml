@@ -1,6 +1,6 @@
 container_registry: demoacr41235.azurecr.io/
 storage_account:
-  name: demost41235
+  name: demosa41235
   key: "KEY"
 
 api:
