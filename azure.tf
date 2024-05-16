@@ -45,6 +45,10 @@ resource "azurerm_kubernetes_cluster" "demo_aks" {
     type = "SystemAssigned"
   }
 
+  storage_profile {
+    blob_driver_enabled = true
+  }
+
   tags = {
     environment = "development"
   }
@@ -57,9 +61,24 @@ resource "azurerm_role_assignment" "aks_acr_role" {
   skip_service_principal_aad_check = true
 }
 
+resource "azurerm_storage_account" "demo_sa_datalake" {
+  name                     = "demosa41235"
+  resource_group_name      = azurerm_resource_group.demo_rg.name
+  location                 = azurerm_resource_group.demo_rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = {
+    environment = "demo"
+  }
+
+  account_kind = "StorageV2"
+  is_hns_enabled = true
+}
+
 # Define the storage account
 resource "azurerm_storage_account" "demo_sa" {
-  name                     = "demosa41235"
+  name                     = "demosa91776"
   resource_group_name      = azurerm_resource_group.demo_rg.name
   location                 = azurerm_resource_group.demo_rg.location
   account_tier             = "Standard"
@@ -68,7 +87,7 @@ resource "azurerm_storage_account" "demo_sa" {
 
 # Define the file share within the storage account
 resource "azurerm_storage_share" "demo_fs" {
-  name                 = "demofs41235"
+  name                 = "demofs91776"
   storage_account_name = azurerm_storage_account.demo_sa.name
   quota                = 50
 }

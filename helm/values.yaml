@@ -9,6 +9,6 @@ api:
     tag: "latest"
 
 
-blobfuse: false
+blobfuse: true
 disk: false
-fs: true
+fs: false
