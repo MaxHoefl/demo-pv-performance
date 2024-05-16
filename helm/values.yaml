@@ -10,3 +10,5 @@ api:
 
 
 blobfuse: false
+disk: false
+fs: true

@@ -1,14 +1,15 @@
-{{/*apiVersion: storage.k8s.io/v1*/}}
-{{/*kind: StorageClass*/}}
-{{/*metadata:*/}}
-{{/*  name: managed-csi-shared*/}}
-{{/*provisioner: disk.csi.azure.com*/}}
-{{/*parameters:*/}}
-{{/*  skuname: Premium_LRS  # Currently shared disk only available with premium SSD*/}}
-{{/*  maxShares: "2"*/}}
-{{/*  cachingMode: None  # ReadOnly cache is not available for premium SSD with maxShares>1*/}}
-{{/*reclaimPolicy: Delete*/}}
-{{/*---*/}}
+{{- if .Values.disk }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: managed-csi-shared
+provisioner: disk.csi.azure.com
+parameters:
+  skuname: Premium_LRS  # Currently shared disk only available with premium SSD
+  maxShares: "2"
+  cachingMode: None  # ReadOnly cache is not available for premium SSD with maxShares>1
+reclaimPolicy: Delete
+---
 {{/*kind: PersistentVolumeClaim*/}}
 {{/*apiVersion: v1*/}}
 {{/*metadata:*/}}
@@ -47,6 +48,8 @@ spec:
     requests:
       storage: 256Gi
   volumeMode: Block
+  storageClassName: managed-csi-shared
   accessModes:
     - ReadWriteMany
   volumeName: azuredisk-shared-block # The name of the PV (above)
+{{- end }}

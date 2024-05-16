@@ -56,3 +56,19 @@ resource "azurerm_role_assignment" "aks_acr_role" {
   scope                            = azurerm_container_registry.demo_acr.id
   skip_service_principal_aad_check = true
 }
+
+# Define the storage account
+resource "azurerm_storage_account" "demo_sa" {
+  name                     = "demosa41235"
+  resource_group_name      = azurerm_resource_group.demo_rg.name
+  location                 = azurerm_resource_group.demo_rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+# Define the file share within the storage account
+resource "azurerm_storage_share" "demo_fs" {
+  name                 = "demofs41235"
+  storage_account_name = azurerm_storage_account.demo_sa.name
+  quota                = 50
+}

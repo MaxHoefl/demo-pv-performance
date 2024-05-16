@@ -1,0 +1,39 @@
+{{- if .Values.fs }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-api
+  template:
+    metadata:
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: demo-api
+          image: {{ .Values.container_registry }}{{ .Values.api.image.name }}:{{ .Values.api.image.tag }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CUBE_ROOT_DIR
+              value: /mnt/azure
+          volumeMounts:
+            - name: azure
+              mountPath: /mnt/azure
+              readOnly: false
+      volumes:
+          - name: azure
+            csi:
+              driver: file.csi.azure.com
+              volumeAttributes:
+                secretName: azure-secret  # required
+                shareName: demofs41235  # required
+                mountOptions: 'dir_mode=0777,file_mode=0777,cache=strict,actimeo=30,nosharesock'  # optional
+
+{{- end }}
