@@ -18,6 +18,16 @@ We mount an Azure datalake (gen2 HNS) to pod via PV that uses `blob.csi.azure.co
 - Writing 40Mb to Azure datalake PV: 2s
 - Reading 40Mb from Azure datalake PV: 356ms
 
+Writing 1000 4Mb cubes to Azure blobfuse PV: ~3m
+Reading 1 cube of 4Mb from Azure blobfuse PV (when cached): 150ms (50ms)
+Reading 1000 cubes of 4Mb from Azure blobfuse PV: ~2m 7s
+Reading 10 cubes of 4Mb from Azure blobfuse PV (when cached): 2s (600ms)
+Reading 100 cubes of 4Mb from Azure blobfuse PV (when cached): 13s (1s)
+
+Writing 100 9Mb cubes to Azure blobfuse PV: 35s
+Reading 1 9Mb cube (when cached): 150ms (55ms)
+Reading 10 9Mb cubes (when cached): 1900ms (265ms)
+
 ## Mounting Azure blob fuse to pod (with sliced cube)
 
 
