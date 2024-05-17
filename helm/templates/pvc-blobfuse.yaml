@@ -14,7 +14,7 @@ spec:
   storageClassName: azureblob-fuse-premium
   mountOptions:
     - -o allow_other
-    - --file-cache-timeout-in-seconds=120
+    - --file-cache-timeout-in-seconds=10
   csi:
     driver: blob.csi.azure.com
     # volumeid has to be unique for every identical storage blob container in the cluster
