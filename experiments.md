@@ -15,6 +15,8 @@ We mount an Azure file share to pod via PV that uses the `file.csi.azure.com` st
 
 We mount an Azure datalake (gen2 HNS) to pod via PV that uses `blob.csi.azure.com` storage driver.
 
+- Writing 40Mb to Azure datalake PV: 2s
+- Reading 40Mb from Azure datalake PV: 356ms
 
 ## Mounting Azure blob fuse to pod (with sliced cube)
 

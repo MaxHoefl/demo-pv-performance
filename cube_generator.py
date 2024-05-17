@@ -24,10 +24,11 @@ sizes = {
     }
 }
 
-def generate_cube(id: str, target_dir):
-    x, y, z = sizes[id].values()
+
+def generate_cube(x: int, y: int, z: int, name, target_dir):
+    #x, y, z = sizes[id].values()
     cube = numpy.random.random(size=(x, y, z))
-    cube.tofile(f"{target_dir}/cube_{id}.bin")
-    with open(f"{target_dir}/cube_{id}.json", "w") as f:
+    cube.tofile(f"{target_dir}/{name}.bin")
+    with open(f"{target_dir}/{name}.json", "w") as f:
         f.write(json.dumps({"x": x, "y": y, "z": z}))
     return x * y * z * 8 / (1024 * 1024)
